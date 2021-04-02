@@ -2,4 +2,9 @@
     <string name="app_name">AN02ONL_PlannerApp</string>
     <string name="welcome">Welcome</string>
     <string name="click_me">Click Me</string>
+    <string name="enter_your_note">Enter your note</string>
+    <string name="enter_note_date">Enter note date</string>
+    <string name="date_pattern">DD.MM.YYYY</string>
+    <string name="confirm">Confirm</string>
+    <string name="add_new_note">Add New Note</string>
 </resources>
