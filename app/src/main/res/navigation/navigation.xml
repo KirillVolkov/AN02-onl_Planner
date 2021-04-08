@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/toMainFragment"
-            app:destination="@+id/mainFragment" />
+            app:destination="@+id/mainFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popExitAnim="@anim/fragment_out" />
     </fragment>
 
     <fragment
@@ -21,14 +24,19 @@
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/toAddNewFragment"
-            app:destination="@+id/addNewFragment" />
+            android:id="@+id/toNoteDetails"
+            app:destination="@+id/noteDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/addNewFragment"
-        android:name="io.techmeskills.an02onl_plannerapp.screen.add_new.AddNewFragment"
-        android:label="AddNewFragment"
-        tools:layout="@layout/fragment_add_new" />
+        android:id="@+id/noteDetailsFragment"
+        android:name="io.techmeskills.an02onl_plannerapp.screen.note_details.NoteDetailsFragment"
+        android:label="NoteDetailsFragment"
+        tools:layout="@layout/fragment_note_details">
+        <argument
+            android:name="note"
+            app:argType="io.techmeskills.an02onl_plannerapp.screen.main.Note"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

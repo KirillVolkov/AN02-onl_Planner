@@ -1,7 +1,7 @@
 package io.techmeskills.an02onl_plannerapp
 
 import android.app.Application
-import io.techmeskills.an02onl_plannerapp.screen.add_new.AddNewViewModel
+import io.techmeskills.an02onl_plannerapp.screen.note_details.NoteDetailsViewModel
 import io.techmeskills.an02onl_plannerapp.screen.main.MainViewModel
 import io.techmeskills.an02onl_plannerapp.screen.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +22,6 @@ class PlannerApp : Application() {
     private val viewModels = module {
         viewModel { SplashViewModel() }
         viewModel { MainViewModel() }
-        viewModel { AddNewViewModel() }
+        viewModel { NoteDetailsViewModel() }
     }
 }

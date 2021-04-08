@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.databinding.FragmentMainBinding
-import io.techmeskills.an02onl_plannerapp.screen.add_new.AddNewFragment
+import io.techmeskills.an02onl_plannerapp.screen.note_details.NoteDetailsFragment
 import io.techmeskills.an02onl_plannerapp.support.NavigationFragment
 import io.techmeskills.an02onl_plannerapp.support.navigateSafe
 import io.techmeskills.an02onl_plannerapp.support.setVerticalMargin
@@ -20,23 +20,36 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
 
     private val viewModel: MainViewModel by viewModel()
 
+    private val adapter = NotesRecyclerViewAdapter(
+        onClick = { note ->
+            findNavController().navigateSafe(MainFragmentDirections.toNoteDetails(note))
+        },
+        onDelete = {
+            viewModel.deleteNote(it)
+        }
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.notesLiveData.observe(this.viewLifecycleOwner, {
-            viewBinding.recyclerView.adapter = NotesRecyclerViewAdapter(it)
-        })
+        viewBinding.recyclerView.adapter = adapter
 
-        setFragmentResultListener(AddNewFragment.ADD_NEW_RESULT) { key, bundle ->
-            val note = bundle.getString(AddNewFragment.TEXT)
-            val date = bundle.getString(AddNewFragment.DATE)
-            note?.let {
-                viewModel.addNote(it, date)
+        viewModel.notesLiveData.observe(this.viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
+        setFragmentResultListener(NoteDetailsFragment.NOTE_RESULT) { key, bundle ->
+            bundle.getParcelable<Note>(NoteDetailsFragment.NOTE)?.let {
+                if (it.id < 0) {
+                    viewModel.addNote(it)
+                } else {
+                    viewModel.editNote(it)
+                }
             }
         }
 
         viewBinding.btnAdd.setOnClickListener {
-            findNavController().navigateSafe(MainFragmentDirections.toAddNewFragment())
+            findNavController().navigateSafe(MainFragmentDirections.toNoteDetails(null))
         }
     }
 

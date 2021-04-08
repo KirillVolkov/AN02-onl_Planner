@@ -21,8 +21,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background="@color/white"
+        android:background="@drawable/test_shape"
         android:elevation="4dp"
+        android:maxHeight="100dp"
+        android:textColor="@color/black"
         android:hint="@string/enter_your_note"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,10 +33,10 @@
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
-    <EditText
-        android:id="@+id/etDate"
+    <DatePicker
+        android:id="@+id/tvDate"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         android:background="@color/white"
         android:elevation="4dp"
@@ -43,10 +45,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etNote"
+        app:layout_constraintBottom_toTopOf="@+id/confirm"
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
-    <Button
+    <TextView
+        style="@style/ButtonTextView"
         android:id="@+id/confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -55,6 +59,6 @@
         android:text="@string/confirm"
         app:layout_constraintEnd_toEndOf="@+id/etNote"
         app:layout_constraintStart_toStartOf="@+id/etNote"
-        app:layout_constraintTop_toBottomOf="@+id/etDate" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

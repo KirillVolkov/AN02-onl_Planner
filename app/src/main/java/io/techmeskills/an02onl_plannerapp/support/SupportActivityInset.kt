@@ -19,5 +19,4 @@ abstract class SupportActivityInset<T : ViewBinding> : AppCompatActivity(), View
             fragment.onInsetsReceived(statusBarSize, navigationBarSize, hasKeyboard)
         }
     }
-
 }
