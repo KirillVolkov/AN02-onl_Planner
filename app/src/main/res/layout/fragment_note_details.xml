@@ -9,12 +9,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_200"
+        android:background="@color/white"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/add_new_note"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/black" />
 
     <EditText
         android:id="@+id/etNote"
@@ -23,18 +24,24 @@
         android:layout_margin="16dp"
         android:background="@drawable/test_shape"
         android:elevation="4dp"
-        android:maxHeight="100dp"
-        android:textColor="@color/black"
+        android:gravity="start|top"
         android:hint="@string/enter_your_note"
+        android:maxHeight="100dp"
+        android:minHeight="100dp"
         android:padding="16dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/tvDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
     <DatePicker
         android:id="@+id/tvDate"
+        android:theme="@style/DatePickerStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
@@ -44,12 +51,13 @@
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNote"
         app:layout_constraintBottom_toTopOf="@+id/confirm"
+        app:layout_constraintTop_toBottomOf="@+id/etNote"
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
     <TextView
+        android:elevation="8dp"
         style="@style/ButtonTextView"
         android:id="@+id/confirm"
         android:layout_width="0dp"

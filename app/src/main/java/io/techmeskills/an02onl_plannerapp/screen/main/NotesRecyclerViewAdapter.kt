@@ -9,36 +9,57 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.techmeskills.an02onl_plannerapp.R
+import io.techmeskills.an02onl_plannerapp.models.Note
 
 class NotesRecyclerViewAdapter(
     private val onClick: (Note) -> Unit,
-    private val onDelete: (Int) -> Unit
-) :
-    ListAdapter<Note, NotesRecyclerViewAdapter.NoteViewHolder>(NoteAdapterDiffCallback()) {
+    private val onDelete: (Note) -> Unit,
+    private val onAddNew: () -> Unit
+) : ListAdapter<Note, RecyclerView.ViewHolder>(NoteAdapterDiffCallback()) {
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = NoteViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.note_list_item, parent, false),
-        ::onItemClick,
-        onDelete
-    )
+    ): RecyclerView.ViewHolder = when (viewType) {
+        ADD_NEW_VIEW_TYPE -> AddNewViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.note_list_item_add, parent, false),
+            onAddNew
+        )
+        else -> NoteViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.note_list_item, parent, false),
+            ::onItemClick,
+            ::onItemDelete
+        )
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is AddNewNote -> ADD_NEW_VIEW_TYPE
+            else -> NOTE_VIEW_TYPE
+        }
+    }
 
     private fun onItemClick(position: Int) {
         onClick(getItem(position))
     }
 
-    override fun onBindViewHolder(holder: NotesRecyclerViewAdapter.NoteViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    private fun onItemDelete(position: Int) {
+        onDelete(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is NoteViewHolder -> holder.bind(getItem(position))
+            else -> (holder as AddNewViewHolder).bind()
+        }
     }
 
     inner class NoteViewHolder(
         itemView: View,
         private val onItemClick: (Int) -> Unit,
         private val onItemDelete: (Int) -> Unit
-    ) :
-        RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
@@ -58,6 +79,25 @@ class NotesRecyclerViewAdapter(
             tvTitle.text = item.title
             tvDate.text = item.date
         }
+    }
+
+    inner class AddNewViewHolder(
+        itemView: View,
+        private val onItemClick: () -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick()
+            }
+        }
+
+        fun bind() = Unit
+    }
+
+    companion object {
+        const val ADD_NEW_VIEW_TYPE = 1382
+        const val NOTE_VIEW_TYPE = 2832
     }
 }
 

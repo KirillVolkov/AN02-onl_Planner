@@ -5,13 +5,12 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.databinding.FragmentNoteDetailsBinding
-import io.techmeskills.an02onl_plannerapp.screen.main.Note
+import io.techmeskills.an02onl_plannerapp.models.Note
 import io.techmeskills.an02onl_plannerapp.support.NavigationFragment
 import io.techmeskills.an02onl_plannerapp.support.setVerticalMargin
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -33,16 +32,22 @@ class NoteDetailsFragment :
 
         viewBinding.confirm.setOnClickListener {
             if (viewBinding.etNote.text.isNotBlank()) {
-                setFragmentResult(NOTE_RESULT, Bundle().apply {
-                    putParcelable(
-                        NOTE,
+                args.note?.let { //если note != null, то это обновление заметки
+                    viewModel.updateNote(
                         Note(
-                            if (args.note == null) -1 else args.note!!.id,
-                            viewBinding.etNote.text.toString(),
-                            dateFormatter.format(viewBinding.tvDate.getSelectedDate())
+                            id = it.id, //при обновлении надо указать id, чтобы база знала что обновлять
+                            title = viewBinding.etNote.text.toString(),
+                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate())
                         )
                     )
-                })
+                } ?: kotlin.run { //если note == null, то это новая заметка, и мы ее добавляем
+                    viewModel.addNewNote(
+                        Note( //при добавлении id можно не указывать
+                            title = viewBinding.etNote.text.toString(),
+                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate())
+                        )
+                    )
+                }
                 findNavController().popBackStack()
             } else {
                 Toast.makeText(requireContext(), " Please, enter your note", Toast.LENGTH_LONG)
@@ -82,8 +87,8 @@ class NoteDetailsFragment :
     }
 
     override fun onInsetsReceived(top: Int, bottom: Int, hasKeyboard: Boolean) {
-        viewBinding.toolbar.setPadding(0, top, 0, 0)
-        viewBinding.confirm.setVerticalMargin(marginBottom = bottom)
+        viewBinding.toolbar.setVerticalMargin(marginTop = top)
+        viewBinding.confirm.setVerticalMargin(marginBottom = bottom * 11 / 10)
     }
 
     override val backPressedCallback: OnBackPressedCallback
@@ -92,9 +97,4 @@ class NoteDetailsFragment :
                 findNavController().popBackStack()
             }
         }
-
-    companion object {
-        const val NOTE_RESULT = "NOTE_RESULT"
-        const val NOTE = "NOTE"
-    }
 }
