@@ -42,7 +42,10 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
             adapter.submitList(it)
         }
 
-        viewModel.invalidateList() //вызываем обновление списка из базы данных
+        viewBinding.ivLogout.setOnClickListener {
+            viewModel.logout()
+            findNavController().navigateSafe(MainFragmentDirections.toLoginFragment())
+        }
     }
 
     override fun onInsetsReceived(top: Int, bottom: Int, hasKeyboard: Boolean) {

@@ -29,17 +29,19 @@ class NoteDetailsFragment :
     private val args: NoteDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         viewBinding.confirm.setOnClickListener {
             if (viewBinding.etNote.text.isNotBlank()) {
+
                 args.note?.let { //если note != null, то это обновление заметки
                     viewModel.updateNote(
                         Note(
                             id = it.id, //при обновлении надо указать id, чтобы база знала что обновлять
                             title = viewBinding.etNote.text.toString(),
-                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate())
+                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate()),
+                            userId = it.userId
                         )
                     )
+
                 } ?: kotlin.run { //если note == null, то это новая заметка, и мы ее добавляем
                     viewModel.addNewNote(
                         Note( //при добавлении id можно не указывать

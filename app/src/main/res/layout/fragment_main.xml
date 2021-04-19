@@ -16,7 +16,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Planner App"
-        app:titleTextColor="@color/black" />
+        app:titleTextColor="@color/black">
+
+        <ImageView
+            android:id="@+id/ivLogout"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:scaleType="center"
+            android:src="@drawable/ic_logout" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

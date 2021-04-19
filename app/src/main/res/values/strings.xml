@@ -7,4 +7,6 @@
     <string name="date_pattern">DD.MM.YYYY</string>
     <string name="confirm">Confirm</string>
     <string name="add_new_note">Add New Note</string>
+    <string name="enter_user_name">Enter user name</string>
+    <string name="log_in">Log In</string>
 </resources>
