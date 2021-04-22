@@ -1,6 +1,8 @@
 package io.techmeskills.an02onl_plannerapp
 
 import android.app.Application
+import io.techmeskills.an02onl_plannerapp.cloud.ApiInterface
+import io.techmeskills.an02onl_plannerapp.repository.CloudRepository
 import io.techmeskills.an02onl_plannerapp.database.DatabaseConstructor
 import io.techmeskills.an02onl_plannerapp.database.PlannerDatabase
 import io.techmeskills.an02onl_plannerapp.datastore.AppSettings
@@ -20,12 +22,12 @@ class PlannerApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@PlannerApp)
-            modules(listOf(viewModels, storageModule, repositoryModule))
+            modules(listOf(viewModels, storageModule, repositoryModule, cloudModule))
         }
     }
 
     private val viewModels = module {
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         viewModel { NoteDetailsViewModel(get()) }
         viewModel { LoginViewModel(get()) }
     }
@@ -38,7 +40,12 @@ class PlannerApp : Application() {
     }
 
     private val repositoryModule = module {  //создаем репозитории
-        factory { UsersRepository(get(), get()) }
+        factory { UsersRepository(get(), get(), get()) }
         factory { NotesRepository(get(), get()) }
+        factory { CloudRepository(get(), get(), get()) }
+    }
+
+    private val cloudModule = module {
+        factory { ApiInterface.get() }
     }
 }

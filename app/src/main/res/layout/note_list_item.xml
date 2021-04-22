@@ -46,11 +46,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:fontFamily="sans-serif"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="23.03.2021" />
+
+            <ImageView
+                android:id="@+id/ivCloud"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_cloud"
+                app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+                app:layout_constraintEnd_toStartOf="@+id/tvDate"
+                app:layout_constraintTop_toTopOf="@+id/tvDate"
+                app:tint="@color/purple_700" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

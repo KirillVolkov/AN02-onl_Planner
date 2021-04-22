@@ -14,7 +14,6 @@ import io.techmeskills.an02onl_plannerapp.support.NavigationFragment
 import io.techmeskills.an02onl_plannerapp.support.navigateSafe
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class LoginFragment : NavigationFragment<FragmentLoginBinding>(R.layout.fragment_login) {
 
     override val viewBinding: FragmentLoginBinding by viewBinding()

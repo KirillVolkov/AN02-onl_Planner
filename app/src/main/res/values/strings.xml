@@ -9,4 +9,10 @@
     <string name="add_new_note">Add New Note</string>
     <string name="enter_user_name">Enter user name</string>
     <string name="log_in">Log In</string>
+    <string name="cloud_request_title">Cloud storage</string>
+    <string name="pick_action">Please, pick cloud action</string>
+    <string name="action_import">Import</string>
+    <string name="action_export">Export</string>
+    <string name="cloud_failed">Failed to perform cloud operation</string>
+
 </resources>

@@ -16,6 +16,16 @@ class NotesRepository(private val notesDao: NotesDao, private val appSettings: A
                 notesDao.getAllNotesFlowByUserId(userId) //получаем заметки по айди юзера
             }
 
+    suspend fun getCurrentUserNotes(): List<Note> {
+        return notesDao.getAllNotesByUserId(appSettings.userId())
+    }
+
+    suspend fun setAllNotesSyncWithCloud() {
+        withContext(Dispatchers.IO) {
+            notesDao.setAllNotesSyncWithCloud()
+        }
+    }
+
     suspend fun saveNote(note: Note) {
         withContext(Dispatchers.IO) {
             notesDao.saveNote(
@@ -25,6 +35,12 @@ class NotesRepository(private val notesDao: NotesDao, private val appSettings: A
                     userId = appSettings.userId()
                 )
             )
+        }
+    }
+
+    suspend fun saveNotes(notes: List<Note>) {
+        withContext(Dispatchers.IO) {
+            notesDao.saveNotes(notes)
         }
     }
 
