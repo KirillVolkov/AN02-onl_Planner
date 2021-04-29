@@ -1,7 +1,6 @@
 package io.techmeskills.an02onl_plannerapp
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,9 +22,18 @@ class MainActivity : SupportActivityInset<ActivityMainBinding>() {
         setContentView(viewBinding.root)
 
         setWindowTransparency(this)
+
     }
 
     override fun getActiveFragment(): Fragment? {
         return navHostFragment.childFragmentManager.fragments[0]
+    }
+
+    override fun onBackPressed() {
+        if (navController.previousBackStackEntry != null) {
+            super.onBackPressed()
+        } else {
+            finish()
+        }
     }
 }

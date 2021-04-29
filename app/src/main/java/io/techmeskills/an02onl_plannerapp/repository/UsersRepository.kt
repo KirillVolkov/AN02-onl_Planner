@@ -8,7 +8,6 @@ import io.techmeskills.an02onl_plannerapp.datastore.AppSettings
 import io.techmeskills.an02onl_plannerapp.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -18,18 +17,15 @@ class UsersRepository(
     private val usersDao: UserDao,
     private val appSettings: AppSettings
 ) {
-
     val allUserNames = usersDao.getAllUserNames()
 
     suspend fun login(userName: String) {
         withContext(Dispatchers.IO) { //указываем, что метод должен выполниться в IO
             if (checkUserExists(userName).not()) { //проверяем существует ли в базе юзер с таким именем
-                val userId =
-                    usersDao.newUser(User(name = userName)) //добавляем в базу нового юзера, берем его сгенерированный базой id
-                appSettings.setUserId(userId) //запоминаем залогиненного юзера в сеттингах
+                usersDao.newUser(User(name = userName)) //добавляем в базу нового юзера, берем его сгенерированный базой id
+                appSettings.setUserName(userName) //запоминаем залогиненного юзера в сеттингах
             } else {
-                val userId = usersDao.getUserId(userName)
-                appSettings.setUserId(userId)
+                appSettings.setUserName(userName)
             }
         }
     }
@@ -40,16 +36,21 @@ class UsersRepository(
         }
     }
 
-    fun getCurrentUserFlow(): Flow<User> = appSettings.userIdFlow().flatMapLatest {
-        usersDao.getById(it)
-    }
+    fun getCurrentUserFlow(): Flow<User> = appSettings.userNameFlow().map { User(it) }
 
     fun checkUserLoggedIn(): Flow<Boolean> =
-        appSettings.userIdFlow().map { it >= 0 }.flowOn(Dispatchers.IO)
+        appSettings.userNameFlow().map { it.isNotEmpty() }.flowOn(Dispatchers.IO)
 
     suspend fun logout() {
         withContext(Dispatchers.IO) {
-            appSettings.setUserId(-1)
+            appSettings.setUserName("")
+        }
+    }
+
+    suspend fun deleteCurrent() {
+        withContext(Dispatchers.IO) {
+            usersDao.deleteUser(User(appSettings.userName()))
+            logout()
         }
     }
 

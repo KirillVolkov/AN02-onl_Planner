@@ -2,7 +2,6 @@ package io.techmeskills.an02onl_plannerapp.screen.note_details
 
 import android.os.Bundle
 import android.view.View
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
@@ -28,7 +27,14 @@ class NoteDetailsFragment :
 
     private val args: NoteDetailsFragmentArgs by navArgs()
 
+    private var selectedDate: Date = Date()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        viewBinding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         viewBinding.confirm.setOnClickListener {
             if (viewBinding.etNote.text.isNotBlank()) {
 
@@ -37,8 +43,8 @@ class NoteDetailsFragment :
                         Note(
                             id = it.id, //при обновлении надо указать id, чтобы база знала что обновлять
                             title = viewBinding.etNote.text.toString(),
-                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate()),
-                            userId = it.userId
+                            date = dateFormatter.format(selectedDate),
+                            userName = it.userName
                         )
                     )
 
@@ -46,7 +52,8 @@ class NoteDetailsFragment :
                     viewModel.addNewNote(
                         Note( //при добавлении id можно не указывать
                             title = viewBinding.etNote.text.toString(),
-                            date = dateFormatter.format(viewBinding.tvDate.getSelectedDate())
+                            date = dateFormatter.format(selectedDate),
+                            userName = ""
                         )
                     )
                 }
@@ -59,38 +66,26 @@ class NoteDetailsFragment :
 
         args.note?.let { note ->
             viewBinding.etNote.setText(note.title)
-            viewBinding.tvDate.setSelectedDate(note.date)
+            selectedDate = dateFormatter.parse(note.date) ?: Date()
+            viewBinding.calendarView.setDate(selectedDate.time, false, true)
         }
-    }
 
-    private fun DatePicker.getSelectedDate(): Date {
-        val calendar = Calendar.getInstance(Locale.getDefault())
-        calendar.set(Calendar.YEAR, this.year)
-        calendar.set(Calendar.MONTH, this.month)
-        calendar.set(Calendar.DAY_OF_MONTH, this.dayOfMonth)
-        calendar.set(Calendar.HOUR, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar.time
-    }
-
-    private fun DatePicker.setSelectedDate(date: String?) {
-        date?.let {
-            dateFormatter.parse(it)?.let { date ->
-                val calendar = Calendar.getInstance(Locale.getDefault())
-                calendar.time = date
-                val year = calendar.get(Calendar.YEAR)
-                val month = calendar.get(Calendar.MONTH)
-                val day = calendar.get(Calendar.DAY_OF_MONTH)
-                this.updateDate(year, month, day)
-            }
+        viewBinding.calendarView.setOnDateChangeListener { _, year, month, monthDay ->
+            val calendar = Calendar.getInstance(Locale.getDefault())
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, monthDay)
+            calendar.set(Calendar.HOUR, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+            selectedDate = calendar.time
         }
     }
 
     override fun onInsetsReceived(top: Int, bottom: Int, hasKeyboard: Boolean) {
         viewBinding.toolbar.setVerticalMargin(marginTop = top)
-        viewBinding.confirm.setVerticalMargin(marginBottom = bottom * 11 / 10)
+        viewBinding.confirm.setVerticalMargin(marginBottom = bottom * 3 / 2)
     }
 
     override val backPressedCallback: OnBackPressedCallback

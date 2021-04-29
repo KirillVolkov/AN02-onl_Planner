@@ -28,6 +28,8 @@
         android:layout_marginHorizontal="32dp"
         android:background="@drawable/login_background"
         android:hint="@string/enter_user_name"
+        android:textColor="@color/black"
+        android:textColorHint="@color/purple_200"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

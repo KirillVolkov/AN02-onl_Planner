@@ -14,5 +14,13 @@
     <string name="action_import">Import</string>
     <string name="action_export">Export</string>
     <string name="cloud_failed">Failed to perform cloud operation</string>
+    <string name="logout">Log Out</string>
+    <string name="cloud_action">Cloud Action</string>
+    <string name="delete_user">Delete User</string>
+    <string name="cloud_success">Cloud operation successfully performed</string>
+    <string name="are_you_sure">Are you sure? All user data will be ramoved from device!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="new_note">New note</string>
 
 </resources>

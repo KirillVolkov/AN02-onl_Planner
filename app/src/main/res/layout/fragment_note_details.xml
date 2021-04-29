@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/add_new_note"
+        app:navigationIcon="@drawable/ic_back"
         app:titleTextColor="@color/black" />
 
     <EditText
@@ -30,7 +32,7 @@
         android:minHeight="100dp"
         android:padding="16dp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/tvDate"
+        app:layout_constraintBottom_toTopOf="@+id/calendarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -39,11 +41,12 @@
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
-    <DatePicker
-        android:id="@+id/tvDate"
-        android:theme="@style/DatePickerStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/CalenderViewCustom"
+        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         android:layout_margin="16dp"
         android:background="@color/white"
         android:elevation="4dp"
@@ -61,10 +64,12 @@
         style="@style/ButtonTextView"
         android:id="@+id/confirm"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fab_height"
         android:layout_marginTop="12dp"
         android:paddingVertical="12dp"
         android:text="@string/confirm"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintEnd_toEndOf="@+id/etNote"
         app:layout_constraintStart_toStartOf="@+id/etNote"
         app:layout_constraintBottom_toBottomOf="parent" />

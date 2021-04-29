@@ -1,8 +1,6 @@
 package io.techmeskills.an02onl_plannerapp.cloud
 
-import io.techmeskills.an02onl_plannerapp.BuildConfig
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,11 +26,7 @@ interface ApiInterface {
         fun get(): ApiInterface = Retrofit.Builder().baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(
-                OkHttpClient.Builder().apply {
-                    if (BuildConfig.DEBUG) {
-                        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                    }
-                }.build()
+                OkHttpClient.Builder().build()
             )
             .build().create(ApiInterface::class.java)
     }

@@ -48,6 +48,7 @@
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="#80000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="23.03.2021" />
@@ -56,6 +57,8 @@
                 android:id="@+id/ivCloud"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_cloud"
                 app:layout_constraintBottom_toBottomOf="@+id/tvDate"

@@ -52,7 +52,7 @@ class LoginFragment : NavigationFragment<FragmentLoginBinding>(R.layout.fragment
         viewModel.autoCompleteUserNamesLiveData.observe(this.viewLifecycleOwner) { userNames ->
             val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
                 requireContext(),
-                android.R.layout.select_dialog_item, userNames
+                R.layout.select_dialog_item, userNames
             )
             viewBinding.etLogin.setAdapter(arrayAdapter)
         }

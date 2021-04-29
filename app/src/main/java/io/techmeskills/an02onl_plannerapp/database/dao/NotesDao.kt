@@ -1,9 +1,7 @@
 package io.techmeskills.an02onl_plannerapp.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.techmeskills.an02onl_plannerapp.models.Note
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class NotesDao {
@@ -20,14 +18,14 @@ abstract class NotesDao {
     @Delete
     abstract fun deleteNote(note: Note)
 
-    @Query("SELECT * FROM notes WHERE userId == :userId ORDER BY id DESC")
-    abstract fun getAllNotesFlowByUserId(userId: Long): Flow<List<Note>>
-
-    @Query("SELECT * FROM notes WHERE userId == :userId ORDER BY id DESC")
-    abstract fun getAllNotesByUserId(userId: Long): List<Note>
-
-    @Query("SELECT * FROM notes WHERE userId == :userId ORDER BY id DESC")
-    abstract fun getAllNotesLiveDataByUserId(userId: Long): LiveData<List<Note>>
+//    @Query("SELECT * FROM notes WHERE userName == :name ORDER BY id DESC")
+//    abstract fun getAllNotesFlowByUser(name: String): Flow<List<Note>>
+//
+//    @Query("SELECT * FROM notes WHERE userName == :name ORDER BY id DESC")
+//    abstract fun getAllNotesByUser(name: String): List<Note>
+//
+//    @Query("SELECT * FROM notes WHERE userName == :name ORDER BY id DESC")
+//    abstract fun getAllNotesLiveDataByUser(name: Long): LiveData<List<Note>>
 
     @Query("UPDATE notes SET fromCloud = 1")
     abstract fun setAllNotesSyncWithCloud()
