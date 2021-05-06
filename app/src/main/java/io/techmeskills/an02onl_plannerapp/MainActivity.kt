@@ -1,5 +1,7 @@
 package io.techmeskills.an02onl_plannerapp
 
+import android.app.AlarmManager
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -22,6 +24,7 @@ class MainActivity : SupportActivityInset<ActivityMainBinding>() {
         setContentView(viewBinding.root)
 
         setWindowTransparency(this)
+
 
     }
 

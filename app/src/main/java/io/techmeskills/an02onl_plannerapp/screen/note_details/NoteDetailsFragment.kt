@@ -19,7 +19,7 @@ import java.util.*
 class NoteDetailsFragment :
     NavigationFragment<FragmentNoteDetailsBinding>(R.layout.fragment_note_details) {
 
-    private val dateFormatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    private val dateFormatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
 
     override val viewBinding: FragmentNoteDetailsBinding by viewBinding()
 
@@ -44,7 +44,8 @@ class NoteDetailsFragment :
                             id = it.id, //при обновлении надо указать id, чтобы база знала что обновлять
                             title = viewBinding.etNote.text.toString(),
                             date = dateFormatter.format(selectedDate),
-                            userName = it.userName
+                            userName = it.userName,
+                            alarmEnabled = viewBinding.alarmSwitch.isChecked
                         )
                     )
 
@@ -53,6 +54,7 @@ class NoteDetailsFragment :
                         Note( //при добавлении id можно не указывать
                             title = viewBinding.etNote.text.toString(),
                             date = dateFormatter.format(selectedDate),
+                            alarmEnabled = viewBinding.alarmSwitch.isChecked,
                             userName = ""
                         )
                     )
@@ -65,21 +67,16 @@ class NoteDetailsFragment :
         }
 
         args.note?.let { note ->
+            viewBinding.alarmSwitch.isChecked = note.alarmEnabled
             viewBinding.etNote.setText(note.title)
             selectedDate = dateFormatter.parse(note.date) ?: Date()
-            viewBinding.calendarView.setDate(selectedDate.time, false, true)
+            viewBinding.calendarView.selectDate(Calendar.getInstance().apply {
+                this.time = selectedDate
+            })
         }
 
-        viewBinding.calendarView.setOnDateChangeListener { _, year, month, monthDay ->
-            val calendar = Calendar.getInstance(Locale.getDefault())
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, month)
-            calendar.set(Calendar.DAY_OF_MONTH, monthDay)
-            calendar.set(Calendar.HOUR, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            selectedDate = calendar.time
+        viewBinding.calendarView.addOnDateChangedListener { displayed, date ->
+            selectedDate = date
         }
     }
 

@@ -28,7 +28,6 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
         findNavController().navigateSafe(MainFragmentDirections.toNoteDetails(note))
     }
 
-
     private fun onItemDelete(note: Note) {
         viewModel.deleteNote(note)
     }

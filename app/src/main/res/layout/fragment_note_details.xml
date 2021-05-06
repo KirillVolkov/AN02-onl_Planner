@@ -17,7 +17,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/add_new_note"
         app:navigationIcon="@drawable/ic_back"
-        app:titleTextColor="@color/black" />
+        app:titleTextColor="@color/black">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/alarmSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/notify"
+            app:switchPadding="8dp" />
+    </androidx.appcompat.widget.Toolbar>
 
     <EditText
         android:id="@+id/etNote"
@@ -41,23 +50,21 @@
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
-    <CalendarView
+    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
         android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/CalenderViewCustom"
-        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
-        android:layout_margin="16dp"
-        android:background="@color/white"
-        android:elevation="4dp"
-        android:hint="@string/date_pattern"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        app:fontFamily="sans-serif-medium"
         app:layout_constraintBottom_toTopOf="@+id/confirm"
         app:layout_constraintTop_toBottomOf="@+id/etNote"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="226dp" />
+        app:layout_constraintVertical_bias=".6"
+        app:picker_curved="true"
+        app:picker_cyclic="true"
+        app:picker_itemSpacing="6dp"
+        app:picker_mustBeOnFuture="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:picker_selectorColor="@android:color/transparent" />
 
     <TextView
         android:elevation="8dp"

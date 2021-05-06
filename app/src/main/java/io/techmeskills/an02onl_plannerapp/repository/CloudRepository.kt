@@ -17,7 +17,13 @@ class CloudRepository(
         val user = userRepository.getCurrentUserFlow().first()
         val notes = notesRepository.getCurrentUserNotes()
         val cloudUser = CloudUser(userName = user.name)
-        val cloudNotes = notes.map { CloudNote(id = it.id, title = it.title, date = it.date) }
+        val cloudNotes = notes.map {
+            CloudNote(
+                title = it.title,
+                date = it.date,
+                alarmEnabled = it.alarmEnabled
+            )
+        }
         val exportRequestBody =
             ExportNotesRequestBody(cloudUser, userRepository.phoneId, cloudNotes)
         val response = apiInterface.exportNotes(exportRequestBody)
@@ -36,7 +42,8 @@ class CloudRepository(
                 title = cloudNote.title,
                 date = cloudNote.date,
                 userName = user.name,
-                fromCloud = true
+                fromCloud = true,
+                alarmEnabled = cloudNote.alarmEnabled
             )
         }
         notesRepository.saveNotes(notes)

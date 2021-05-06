@@ -13,14 +13,17 @@ import kotlinx.coroutines.withContext
 class NotesRepository(
     private val userDao: UserDao,
     private val notesDao: NotesDao,
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val notificationRepository: NotificationRepository
 ) {
 
     val currentUserNotesFlow: Flow<List<Note>> =
         appSettings.userNameFlow()
             .flatMapLatest { userName -> //получаем из сеттингов текущее имя юзера
                 userDao.getUserContentFlow(userName)
-                    .map { it?.notes ?: emptyList() } //получаем заметки по имени юзера
+                    .map {
+                        it?.notes?.sortedBy { it.date } ?: emptyList()
+                    } //получаем заметки по имени юзера
             }
 
     suspend fun getCurrentUserNotes(): List<Note> {
@@ -35,31 +38,62 @@ class NotesRepository(
 
     suspend fun saveNote(note: Note) {
         withContext(Dispatchers.IO) {
-            notesDao.saveNote(
-                Note(
-                    title = note.title,
-                    date = note.date,
-                    userName = appSettings.userName()
-                )
+            val id = notesDao.saveNote(
+                note.copy(userName = appSettings.userName())
             )
+            if (note.alarmEnabled) {
+                notificationRepository.setNotification(note.copy(id = id))
+            }
         }
     }
 
     suspend fun saveNotes(notes: List<Note>) {
         withContext(Dispatchers.IO) {
             notesDao.saveNotes(notes)
+            notes.forEach {
+                if (it.alarmEnabled) {
+                    notificationRepository.setNotification(it)
+                }
+            }
         }
     }
 
     suspend fun updateNote(note: Note) {
         withContext(Dispatchers.IO) {
+            notesDao.getNoteById(note.id)?.let { oldNote ->
+                notificationRepository.unsetNotification(oldNote)
+            }
             notesDao.updateNote(note)
+            if (note.alarmEnabled) {
+                notificationRepository.setNotification(note)
+            }
         }
     }
 
     suspend fun deleteNote(note: Note) {
         withContext(Dispatchers.IO) {
+            notificationRepository.unsetNotification(note)
             notesDao.deleteNote(note)
+        }
+    }
+
+    suspend fun deleteNoteById(noteId: Long) {
+        withContext(Dispatchers.IO) {
+            notesDao.getNoteById(noteId)?.let {
+                notificationRepository.unsetNotification(it)
+                notesDao.deleteNote(it)
+            }
+        }
+    }
+
+    suspend fun postponeNoteById(noteId: Long) {
+        withContext(Dispatchers.IO) {
+            notesDao.getNoteById(noteId)?.let { note ->
+                notificationRepository.unsetNotification(note)
+                val postponedNote = notificationRepository.postponeNoteTimeByFiveMins(note)
+                notesDao.updateNote(postponedNote)
+                notificationRepository.setNotification(postponedNote)
+            }
         }
     }
 }
