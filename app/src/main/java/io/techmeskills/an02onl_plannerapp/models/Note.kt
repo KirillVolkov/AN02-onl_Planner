@@ -1,8 +1,15 @@
 package io.techmeskills.an02onl_plannerapp.models
 
+import android.graphics.Color
 import android.os.Parcelable
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.room.*
+import com.github.unhappychoice.colorhash.ColorHash
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 @Entity(
@@ -29,4 +36,17 @@ data class Note(
     val fromCloud: Boolean = false,
 
     val alarmEnabled: Boolean = false,
-) : Parcelable
+) : Parcelable {
+
+    @Ignore
+    @IgnoredOnParcel
+    val backgroundColor: Int = ColorHash(title).toColor()
+
+    @Ignore
+    @IgnoredOnParcel
+    val textColor: Int =
+        ((299 * backgroundColor.red + 587 * backgroundColor.green + 114 * backgroundColor.blue) / 1000).let { y ->
+            if (y >= 128) Color.BLACK else Color.WHITE
+        }
+}
+

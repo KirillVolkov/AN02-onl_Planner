@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.databinding.FragmentMainBinding
@@ -24,6 +25,19 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
         onDelete = ::onItemDelete
     )
 
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            when {
+                dy > 0 && viewBinding.fabAdd.translationY == 0f -> {
+                    viewBinding.fabAdd.animate().translationY(100f).alpha(0f).start()
+                }
+                dy < 0 && viewBinding.fabAdd.translationY != 0f -> {
+                    viewBinding.fabAdd.animate().translationY(0f).alpha(1f).start()
+                }
+            }
+        }
+    }
+
     private fun onItemClick(note: Note) {
         findNavController().navigateSafe(MainFragmentDirections.toNoteDetails(note))
     }
@@ -35,8 +49,13 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.recyclerView.adapter = adapter
+
         viewModel.notesLiveData.observe(this.viewLifecycleOwner) {
             adapter.submitList(it)
+        }
+
+        viewModel.userNameLiveData.observe(this.viewLifecycleOwner) {
+            viewBinding.collapsingToolbarLayout.title = it.title
         }
 
         viewBinding.ivSettings.setOnClickListener {
@@ -46,6 +65,13 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
         viewBinding.fabAdd.setOnClickListener {
             findNavController().navigateSafe(MainFragmentDirections.toNoteDetails(null))
         }
+
+        viewBinding.recyclerView.addOnScrollListener(scrollListener)
+    }
+
+    override fun onDestroyView() {
+        viewBinding.recyclerView.removeOnScrollListener(scrollListener)
+        super.onDestroyView()
     }
 
     override fun onInsetsReceived(top: Int, bottom: Int, hasKeyboard: Boolean) {
@@ -55,7 +81,7 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
             0,
             0,
             0,
-            bottom * 3 / 2 + resources.getDimensionPixelSize(R.dimen.fab_height)
+            bottom
         )
     }
 

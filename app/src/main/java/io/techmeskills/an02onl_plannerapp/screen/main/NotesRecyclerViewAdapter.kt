@@ -1,5 +1,6 @@
 package io.techmeskills.an02onl_plannerapp.screen.main
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.models.Note
 
@@ -45,6 +47,7 @@ class NotesRecyclerViewAdapter(
         private val onItemDelete: (Int) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
 
+        private val card = itemView.findViewById<MaterialCardView>(R.id.card)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
         private val ivDelete = itemView.findViewById<ImageView>(R.id.ivRemove)
@@ -62,6 +65,11 @@ class NotesRecyclerViewAdapter(
         }
 
         fun bind(item: Note) {
+            ivCloud.imageTintList = ColorStateList.valueOf(item.textColor)
+            ivAlarm.imageTintList = ColorStateList.valueOf(item.textColor)
+            tvDate.setTextColor(item.textColor)
+            card.setCardBackgroundColor(item.backgroundColor)
+            tvTitle.setTextColor(item.textColor)
             tvTitle.text = item.title
             tvDate.text = item.date
             ivCloud.isVisible = item.fromCloud

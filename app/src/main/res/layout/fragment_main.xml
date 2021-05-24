@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
+    android:background="@color/app_back_color">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:background="@color/white"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Planner App"
-        app:titleTextColor="@color/black">
+        android:background="@drawable/appbar_stick_background"
+        android:elevation="8dp"
+        android:outlineProvider="@null"
+        app:elevation="0dp">
 
-        <ImageView
-            android:id="@+id/ivSettings"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="end"
-            android:scaleType="center"
-            android:src="@drawable/ic_settings"
-            android:layout_width="?attr/actionBarSize"
-            app:tint="@color/purple_700" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:collapsedTitleTextAppearance="@style/AppBarCollapsed"
+            app:expandedTitleGravity="bottom"
+            app:expandedTitleMargin="32dp"
+            app:expandedTitleTextAppearance="@style/AppBarExpanded"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Valera"
+            app:titleEnabled="true">
 
-    </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/ivSettings"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="center"
+                    android:src="@drawable/settings_selector"
+                    android:tint="@color/white" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:paddingTop="12dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:paddingTop="24dp"
         android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,17 +70,15 @@
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/fab_height"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/purple_500"
+        android:layout_gravity="bottom|end"
         android:elevation="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/new_note"
-        android:textColor="@color/white"
-        android:textSize="16sp"
+        android:backgroundTint="@color/purple_200"
         app:icon="@drawable/ic_add"
+        android:drawableTint="@color/white"
         app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="@string/new_note"
+        android:textColor="@color/white" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

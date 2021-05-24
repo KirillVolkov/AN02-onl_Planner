@@ -45,6 +45,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 .addAction(makeDeleteAction(context, noteId))
                 .addAction(makePostponeAction(context, noteId))
                 .setDefaults(Notification.DEFAULT_SOUND)
+
                 .setAutoCancel(true)
             notificationManager.notify(0, builder.build())
         } catch (e: Exception) {

@@ -31,7 +31,7 @@ class PlannerApp : Application() {
     }
 
     private val viewModels = module {
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get()) }
         viewModel { NoteDetailsViewModel(get()) }
         viewModel { LoginViewModel(get()) }
         viewModel { SettingsViewModel(get(), get()) }
@@ -46,7 +46,7 @@ class PlannerApp : Application() {
 
     private val repositoryModule = module {  //создаем репозитории
         factory { UsersRepository(get(), get(), get()) }
-        factory { NotesRepository(get(), get(), get(),get()) }
+        factory { NotesRepository(get(), get(), get(), get()) }
         factory { CloudRepository(get(), get(), get()) }
         factory { NotificationRepository(get(), get()) }
     }

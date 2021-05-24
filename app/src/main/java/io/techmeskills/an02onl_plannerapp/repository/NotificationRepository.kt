@@ -2,6 +2,7 @@ package io.techmeskills.an02onl_plannerapp.repository
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import io.techmeskills.an02onl_plannerapp.models.Note
@@ -33,7 +34,7 @@ class NotificationRepository(private val context: Context, private val alarmMana
         intent.putExtra(NotificationReceiver.NOTIFICATION_KEY_NOTE_ID, note.id)
         intent.putExtra(NotificationReceiver.NOTIFICATION_KEY_NOTE_OWNER, note.userName)
         intent.putExtra(NotificationReceiver.NOTIFICATION_KEY_NOTE_TEXT, note.title)
-        return PendingIntent.getBroadcast(context, 0, intent, 0)
+        return PendingIntent.getBroadcast(context, 0, intent, FLAG_UPDATE_CURRENT)
     }
 
     fun postponeNoteTimeByFiveMins(note: Note): Note {

@@ -1,6 +1,8 @@
 package io.techmeskills.an02onl_plannerapp.notification
 
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import io.techmeskills.an02onl_plannerapp.repository.NotesRepository
@@ -23,23 +25,28 @@ class NotificationActionService : Service(), KoinComponent {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
-            noteId =
-                it.getLongExtra(NotificationReceiver.NOTIFICATION_KEY_NOTE_ID, -1)
+            noteId = it.getLongExtra(NotificationReceiver.NOTIFICATION_KEY_NOTE_ID, -1)
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             when (it.action) {
                 NotificationReceiver.ACTION_DELETE -> {
                     GlobalScope.launch {
                         notesRepository.deleteNoteById(noteId)
                     }
+                    notificationManager.cancel(0)
                 }
                 NotificationReceiver.ACTION_POSTPONE -> {
                     GlobalScope.launch {
                         notesRepository.postponeNoteById(noteId)
                     }
+                    notificationManager.cancel(0)
                 }
                 else -> Unit
             }
-            stopSelf()
         }
+        stopSelf()
         return START_NOT_STICKY
     }
+
 }
