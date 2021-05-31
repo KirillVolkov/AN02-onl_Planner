@@ -18,6 +18,9 @@ abstract class NotesDao {
     @Query("SELECT * FROM notes WHERE id == :noteId LIMIT 1")
     abstract fun getNoteById(noteId: Long): Note?
 
+    @Query("SELECT * FROM notes WHERE :owner == userName ORDER BY ABS(:currTime-date) LIMIT 1")
+    abstract fun getClosestNote(owner: String, currTime: Long): Note?
+
     @Delete
     abstract fun deleteNote(note: Note)
 

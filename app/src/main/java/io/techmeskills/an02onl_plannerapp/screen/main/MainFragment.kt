@@ -2,6 +2,7 @@ package io.techmeskills.an02onl_plannerapp.screen.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -9,10 +10,13 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.databinding.FragmentMainBinding
 import io.techmeskills.an02onl_plannerapp.models.Note
+import io.techmeskills.an02onl_plannerapp.support.CalendarView
 import io.techmeskills.an02onl_plannerapp.support.NavigationFragment
 import io.techmeskills.an02onl_plannerapp.support.navigateSafe
 import io.techmeskills.an02onl_plannerapp.support.setVerticalMargin
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -24,6 +28,8 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
         onClick = ::onItemClick,
         onDelete = ::onItemDelete
     )
+
+    val dayFormatter = SimpleDateFormat("dd EEE", Locale.getDefault())
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -76,7 +82,7 @@ class MainFragment : NavigationFragment<FragmentMainBinding>(R.layout.fragment_m
 
     override fun onInsetsReceived(top: Int, bottom: Int, hasKeyboard: Boolean) {
         viewBinding.toolbar.setVerticalMargin(marginTop = top)
-        viewBinding.fabAdd.setVerticalMargin(marginBottom = bottom * 3 / 2)
+        viewBinding.fabAdd.setVerticalMargin(marginBottom = bottom)
         viewBinding.recyclerView.setPadding(
             0,
             0,

@@ -7,10 +7,7 @@ import io.techmeskills.an02onl_plannerapp.cloud.ApiInterface
 import io.techmeskills.an02onl_plannerapp.database.DatabaseConstructor
 import io.techmeskills.an02onl_plannerapp.database.PlannerDatabase
 import io.techmeskills.an02onl_plannerapp.datastore.AppSettings
-import io.techmeskills.an02onl_plannerapp.repository.CloudRepository
-import io.techmeskills.an02onl_plannerapp.repository.NotesRepository
-import io.techmeskills.an02onl_plannerapp.repository.NotificationRepository
-import io.techmeskills.an02onl_plannerapp.repository.UsersRepository
+import io.techmeskills.an02onl_plannerapp.repository.*
 import io.techmeskills.an02onl_plannerapp.screen.login.LoginViewModel
 import io.techmeskills.an02onl_plannerapp.screen.main.MainViewModel
 import io.techmeskills.an02onl_plannerapp.screen.note_details.NoteDetailsViewModel
@@ -45,8 +42,9 @@ class PlannerApp : Application() {
     }
 
     private val repositoryModule = module {  //создаем репозитории
-        factory { UsersRepository(get(), get(), get()) }
-        factory { NotesRepository(get(), get(), get(), get()) }
+        factory { BroadcastRepository(get()) }
+        factory { UsersRepository(get(), get(), get(), get()) }
+        factory { NotesRepository(get(), get(), get(), get(), get()) }
         factory { CloudRepository(get(), get(), get()) }
         factory { NotificationRepository(get(), get()) }
     }

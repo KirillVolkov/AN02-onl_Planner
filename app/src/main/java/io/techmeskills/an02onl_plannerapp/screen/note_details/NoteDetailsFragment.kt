@@ -10,6 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.databinding.FragmentNoteDetailsBinding
 import io.techmeskills.an02onl_plannerapp.models.Note
+import io.techmeskills.an02onl_plannerapp.support.CalendarView
 import io.techmeskills.an02onl_plannerapp.support.NavigationFragment
 import io.techmeskills.an02onl_plannerapp.support.setVerticalMargin
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -19,15 +20,13 @@ import java.util.*
 class NoteDetailsFragment :
     NavigationFragment<FragmentNoteDetailsBinding>(R.layout.fragment_note_details) {
 
-    private val dateFormatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-
     override val viewBinding: FragmentNoteDetailsBinding by viewBinding()
 
     private val viewModel: NoteDetailsViewModel by viewModel()
 
     private val args: NoteDetailsFragmentArgs by navArgs()
 
-    private var selectedDate: Date = Date()
+    private var selectedDate: Calendar = Calendar.getInstance().apply { time = Date() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -43,7 +42,7 @@ class NoteDetailsFragment :
                         Note(
                             id = it.id, //при обновлении надо указать id, чтобы база знала что обновлять
                             title = viewBinding.etNote.text.toString(),
-                            date = dateFormatter.format(selectedDate),
+                            date = selectedDate.timeInMillis,
                             userName = it.userName,
                             alarmEnabled = viewBinding.alarmSwitch.isChecked
                         )
@@ -53,7 +52,7 @@ class NoteDetailsFragment :
                     viewModel.addNewNote(
                         Note( //при добавлении id можно не указывать
                             title = viewBinding.etNote.text.toString(),
-                            date = dateFormatter.format(selectedDate),
+                            date = selectedDate.timeInMillis,
                             alarmEnabled = viewBinding.alarmSwitch.isChecked,
                             userName = ""
                         )
@@ -69,14 +68,23 @@ class NoteDetailsFragment :
         args.note?.let { note ->
             viewBinding.alarmSwitch.isChecked = note.alarmEnabled
             viewBinding.etNote.setText(note.title)
-            selectedDate = dateFormatter.parse(note.date) ?: Date()
-            viewBinding.calendarView.selectDate(Calendar.getInstance().apply {
-                this.time = selectedDate
-            })
+            selectedDate = Calendar.getInstance().apply { time = Date(note.date) }
+            viewBinding.calendarView.selectedDate = selectedDate.time
         }
 
-        viewBinding.calendarView.addOnDateChangedListener { displayed, date ->
-            selectedDate = date
+        viewBinding.calendarView.onDateChangeCallback = object : CalendarView.DateChangeListener {
+            override fun onDateChanged(date: Date) {
+                val hour = selectedDate.get(Calendar.HOUR_OF_DAY)
+                val minutes = selectedDate.get(Calendar.MINUTE)
+                selectedDate.time = date
+                selectedDate.set(Calendar.HOUR_OF_DAY, hour)
+                selectedDate.set(Calendar.MINUTE, minutes)
+            }
+        }
+
+        viewBinding.timePicker.setOnTimeChangedListener { timePicker, hour, minutes ->
+            selectedDate.set(Calendar.HOUR_OF_DAY, hour)
+            selectedDate.set(Calendar.MINUTE, minutes)
         }
     }
 

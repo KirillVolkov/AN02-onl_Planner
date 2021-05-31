@@ -23,5 +23,6 @@
     <string name="no">No</string>
     <string name="new_note">New note</string>
     <string name="notify">Notify</string>
+    <string name="planner_app_widget">Planner AppWidget</string>
 
 </resources>

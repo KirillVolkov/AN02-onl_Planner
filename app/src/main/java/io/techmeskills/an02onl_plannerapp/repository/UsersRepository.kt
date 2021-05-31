@@ -15,7 +15,8 @@ import kotlinx.coroutines.withContext
 class UsersRepository(
     context: Context,
     private val usersDao: UserDao,
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val broadcastRepository: BroadcastRepository
 ) {
     val allUserNames = usersDao.getAllUserNames()
 
@@ -28,6 +29,7 @@ class UsersRepository(
                 appSettings.setUserName(userName)
             }
         }
+        broadcastRepository.broadcastNotesUpdate()
     }
 
     private suspend fun checkUserExists(userName: String): Boolean {
@@ -45,6 +47,7 @@ class UsersRepository(
         withContext(Dispatchers.IO) {
             appSettings.setUserName("")
         }
+        broadcastRepository.broadcastNotesUpdate()
     }
 
     suspend fun deleteCurrent() {

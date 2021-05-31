@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/app_back_color"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,21 +50,24 @@
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="226dp" />
 
-    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+    <io.techmeskills.an02onl_plannerapp.support.CalendarView
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="24dp"
         android:id="@+id/calendarView"
         android:layout_width="0dp"
-        android:layout_height="230dp"
-        app:fontFamily="sans-serif-medium"
-        app:layout_constraintBottom_toTopOf="@+id/confirm"
-        app:layout_constraintTop_toBottomOf="@+id/etNote"
-        app:layout_constraintVertical_bias=".6"
-        app:picker_curved="true"
-        app:picker_cyclic="true"
-        app:picker_itemSpacing="6dp"
-        app:picker_mustBeOnFuture="true"
+        android:layout_marginBottom="32dp"
+        app:daysCount="300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:picker_selectorColor="@android:color/transparent" />
+        app:layout_constraintTop_toBottomOf="@+id/etNote" />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <TextView
         android:elevation="8dp"

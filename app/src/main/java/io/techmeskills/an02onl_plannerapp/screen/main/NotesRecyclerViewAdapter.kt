@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import io.techmeskills.an02onl_plannerapp.R
 import io.techmeskills.an02onl_plannerapp.models.Note
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NotesRecyclerViewAdapter(
     private val onClick: (Note) -> Unit,
@@ -71,10 +73,14 @@ class NotesRecyclerViewAdapter(
             card.setCardBackgroundColor(item.backgroundColor)
             tvTitle.setTextColor(item.textColor)
             tvTitle.text = item.title
-            tvDate.text = item.date
+            tvDate.text = dateFormatter.format(Date(item.date))
             ivCloud.isVisible = item.fromCloud
             ivAlarm.isVisible = item.alarmEnabled
         }
+    }
+
+    companion object {
+        private val dateFormatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     }
 }
 

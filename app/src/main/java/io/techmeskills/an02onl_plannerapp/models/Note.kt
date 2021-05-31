@@ -28,7 +28,7 @@ data class Note(
     val id: Long = 0L,
 
     val title: String,
-    val date: String,
+    val date: Long,
 
     @ColumnInfo(index = true, name = "userName")
     val userName: String,

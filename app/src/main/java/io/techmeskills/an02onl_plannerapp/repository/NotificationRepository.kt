@@ -7,19 +7,16 @@ import android.content.Context
 import android.content.Intent
 import io.techmeskills.an02onl_plannerapp.models.Note
 import io.techmeskills.an02onl_plannerapp.notification.NotificationReceiver
-import java.text.SimpleDateFormat
 import java.util.*
 
 class NotificationRepository(private val context: Context, private val alarmManager: AlarmManager) {
 
-    private val dateFormatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-
     fun setNotification(note: Note) {
-        val alarmTimeAtUTC = dateFormatter.parse(note.date)
+        val alarmTimeAtUTC = Date(note.date)
 
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            alarmTimeAtUTC!!.time,
+            alarmTimeAtUTC.time,
             makeIntent(note)
         )
     }
@@ -38,10 +35,10 @@ class NotificationRepository(private val context: Context, private val alarmMana
     }
 
     fun postponeNoteTimeByFiveMins(note: Note): Note {
-        val time = dateFormatter.parse(note.date)!!
+        val time = Date(note.date)
         val calendar = Calendar.getInstance()
         calendar.time = time
         calendar.add(Calendar.MINUTE, 5)
-        return note.copy(date = dateFormatter.format(calendar.time))
+        return note.copy(date = calendar.timeInMillis)
     }
 }
