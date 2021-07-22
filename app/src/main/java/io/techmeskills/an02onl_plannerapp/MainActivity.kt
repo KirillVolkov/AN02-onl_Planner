@@ -10,6 +10,8 @@ import io.techmeskills.an02onl_plannerapp.databinding.ActivityMainBinding
 import io.techmeskills.an02onl_plannerapp.support.SupportActivityInset
 import io.techmeskills.an02onl_plannerapp.support.setWindowTransparency
 
+//kek
+
 class MainActivity : SupportActivityInset<ActivityMainBinding>() {
 
     override lateinit var viewBinding: ActivityMainBinding
